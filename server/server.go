@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ type server struct {
 	commands chan command
 }
 
-func newServer() *server {
+func NewServer() *server {
 	log.Println("Creating new server")
 
 	return &server{
@@ -21,7 +21,7 @@ func newServer() *server {
 	}
 }
 
-func (s *server) run() {
+func (s *server) Run() {
 	for cmd := range s.commands {
 		switch cmd.id {
 		case CMD_NAME:
@@ -51,8 +51,12 @@ func (s *server) showVersion(c *client) {
 	c.msg("Version 1.0")
 }
 
-func (s *server) newClient(conn net.Conn) *client {
+func (s *server) NewClient(conn net.Conn) *client {
 	log.Printf("new client has connected: %s", conn.RemoteAddr().String())
+
+	conn.Write([]byte("Welcome to ez-chat\n Enter /help for available commands\n"))
+
+
 
 	return &client{
 		conn:     conn,

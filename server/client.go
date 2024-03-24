@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"bufio"
@@ -15,7 +15,7 @@ type client struct {
 	commands chan<- command
 }
 
-func (c *client) readInput() {
+func (c *client) ReadInput() {
 	for {
 		msg, err := bufio.NewReader(c.conn).ReadString('\n')
 		if err != nil {
@@ -39,14 +39,14 @@ func (c *client) readInput() {
 
 		case "/join":
 			c.commands <- command{
-				id:     CMD_NAME,
+				id:     CMD_JOIN,
 				client: c,
 				args:   args,
 			}
 
 		case "/rooms":
 			c.commands <- command{
-				id:     CMD_NAME,
+				id:     CMD_ROOMS,
 				client: c,
 				args:   args,
 			}

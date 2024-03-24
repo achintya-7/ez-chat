@@ -3,11 +3,13 @@ package main
 import (
 	"log"
 	"net"
+
+	"github.com/achintya-7/ez-chat/server"
 )
 
 func main() {
-	s := newServer()
-	go s.run()
+	s := server.NewServer()
+	go s.Run()
 
 	listener, err := net.Listen("tcp", ":8888")
 	if err != nil {
@@ -24,7 +26,7 @@ func main() {
 			continue
 		}
 
-		c := s.newClient(conn)
-		go c.readInput()
+		c := s.NewClient(conn)
+		go c.ReadInput()
 	}
 }
